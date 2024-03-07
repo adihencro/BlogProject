@@ -1,9 +1,9 @@
 #from django.shortcuts import render
 #from django.shortcuts import HttpResponse
-from .models import Post
-from rest_framework import viewsets
-from .serializers import PostSerializer
+from .models import *
+from .serializers import *
 from django.http import HttpResponse
+from rest_framework import viewsets
 
 
 def home_page(request):
@@ -12,3 +12,15 @@ def home_page(request):
 class PostViewSet(viewsets.ModelViewSet):
   queryset = Post.objects.all()
   serializer_class = PostSerializer
+
+class UserViewSet(viewsets.ModelViewSet):
+  queryset = User.objects.all()
+  serializer_class = UserSerializer
+
+class UserRegistrationViewSet(viewsets.ModelViewSet):
+  queryset = User.objects.all()
+  serializer_class = UserRegistrationSerializer
+
+     
+
+        

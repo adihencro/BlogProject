@@ -41,6 +41,16 @@ INSTALLED_APPS = [
     "rest_framework"
 ]
 
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+    ]
+}
+
+AUTH_USER_MODEL = "posts.User" 
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -100,7 +110,6 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
