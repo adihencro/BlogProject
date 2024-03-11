@@ -5,12 +5,14 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from django.db.models import Q #Multiple filter conditions
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.authentication import TokenAuthentication
 
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    #permission_classes = [IsAuthenticatedOrReadOnly]  # Allow only authenticated users to create/update
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticatedOrReadOnly]  # Allow only authenticated users to create/update
 
     @action(detail=False, methods=['get'])
     def post_by_content_or_title(self, request, str):

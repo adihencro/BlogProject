@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from django.db.models import Q #Multiple filter conditions
 from rest_framework.permissions import *
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework import status
 
@@ -12,7 +13,10 @@ from rest_framework import status
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    #permission_classes = [IsAuthenticatedOrReadOnly]
+
+    #set the authentication scheme 
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 
     @action(detail=False, methods=['get'])
@@ -26,22 +30,6 @@ class UserViewSet(viewsets.ModelViewSet):
       serializer = self.serializer_class(queryset, many=True)
       return Response(serializer.data)
     
-"""
-class RegisterUser(APIView):
-   def post(self, request):
-      serializer = UserSerializer(data=request.data)
-
-      if not serializer.is_valid():
-         return Response({'status' : 403, 'errors': serializer.errors, 'message': 'something wrong'})
-      
-      serializer.save()
-
-      user = User.objects.get(username = serializer.data['username'])
-      token_obj ,_ = Token.objects.get_or_create(user=user)
-
-      return Response({'status' : 200, 'payload' : serializer.data, 'token' : str(token_obj), 'message' : 'Success'})
-"""
-
 
 class RegisterUserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
