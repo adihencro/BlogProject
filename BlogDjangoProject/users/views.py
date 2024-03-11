@@ -1,5 +1,5 @@
 from .models import User
-from .serializers import UserSerializer
+from .serializers import *
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -8,6 +8,7 @@ from rest_framework.permissions import *
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework import status
+from django.shortcuts import get_object_or_404
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -34,7 +35,7 @@ class UserViewSet(viewsets.ModelViewSet):
 class RegisterUserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [AllowAny]  # Allow anyone to register
+    permission_classes = [AllowAny]  
 
     def create(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
@@ -49,10 +50,47 @@ class RegisterUserViewSet(viewsets.ModelViewSet):
             'token': str(token),
             'message': 'User registered successfully'
         })
-
     
 
-    
+class LoginUserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    permission_classes = [AllowAny]  
+
+    def login(self, request):
+        serializer = LoginUserSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data
+        token, created = Token.objects.get_or_create(user=user)
+        
+        return Response({
+            'status': status.HTTP_200_OK,
+            'payload': serializer.data,
+            'token': str(token),
+            'message': 'User logged successfully'
+        })
+
+
 
     
-    
+        
+"""
+class LoginUserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = LoginUserSerializer
+    permission_classes = [AllowAny] 
+
+        def login(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = get_object_or_404(User, username=serializer.data['username'])
+        if not user.check_password(serializer.data['password']):
+            return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
+        token, created = Token.objects.get_or_create(user=user)
+
+        return Response({
+            'status': status.HTTP_200_OK,
+            'payload': serializer.data,
+            'token': str(token),
+            'message': 'User logged successfully'
+        })
+"""

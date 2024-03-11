@@ -13,5 +13,6 @@ urlpatterns = [
     path('api/users/name/<str:name>/', UserViewSet.as_view({'get': 'user_by_name'})),
     path('api-token-auth/', views.obtain_auth_token),
     path('api/users/register', RegisterUserViewSet.as_view({'post' : 'create'})),
+    path('api/users/login', LoginUserViewSet.as_view({'post' : 'login'})),
 ]
 
