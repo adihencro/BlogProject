@@ -3,7 +3,6 @@ from .models import User
 from rest_framework.exceptions import APIException
 from rest_framework.authtoken.models import Token
 from rest_framework import status
-from django.db.models.signals import pre_save
     
 
 class UserSerializer(serializers.ModelSerializer):
@@ -22,6 +21,39 @@ class UserSerializer(serializers.ModelSerializer):
         user.bio = validated_data['bio']
         user.save()
         return user
+"""
+
+class LoginUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TempUserForAuth
+        fields = ['id', 'username', 'password'] 
+
+        def login(self, validated_data):
+            user = TempUserForAuth.create(username=validated_data['username'])
+            user.set_password(validated_data['password'])
+            return user
+            
+
+
+class LoginUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'password'] 
+
+        def login(self, validated_data):
+            username = validated_data['username']
+            password = validated_data['password']
+            
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                raise APIException(detail="Invalid username or password.", status=status.HTTP_401_UNAUTHORIZED)
+
+            if not user.check_password(password):
+                raise APIException(detail="Invalid username or password.", status=status.HTTP_401_UNAUTHORIZED)
+
+            return user
+
 
 
 class LoginUserSerializer(serializers.Serializer):
@@ -51,17 +83,6 @@ class LoginUserSerializer(serializers.Serializer):
 
         return user
 
-"""
-class LoginUserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['id', 'username', 'password'] 
-
-        def login(self, validated_data):
-            user = User
-            user.username=validated_data['username']
-            user.set_password(validated_data['password'])
-            pre_save(user)
 """
 
 
