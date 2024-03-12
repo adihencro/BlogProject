@@ -64,5 +64,5 @@ class LoginView(ObtainAuthToken):
         
         #token, _ = self.token_model.objects.create(user=user)
         token, created = Token.objects.get_or_create(user=user)   
-        response_data = {'token': token.key, 'username': user.username}  
+        response_data = {'status': status.HTTP_201_CREATED, 'token': token.key, 'username': user.username, 'message': 'User logged successfully'}  
         return Response(response_data)
