@@ -5,7 +5,7 @@ from django import forms
 
 class User(AbstractUser):
     username = models.CharField(max_length=10, unique=True)
-    password = models.CharField(max_length=15)
+    password = models.CharField(max_length=250)
     first_name = models.CharField(max_length=10)
     last_name = models.CharField(max_length=20)
     email = models.EmailField(unique=True)

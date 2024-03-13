@@ -11,5 +11,6 @@ router.register(r'posts', PostViewSet)
 urlpatterns = [
     path('api/', include(router.urls)),
     path('api/posts/include/<str:str>/', PostViewSet.as_view({'get': 'post_by_content_or_title'})),
+    path('api/posts/create/', PostViewSet.as_view({'post': 'post'})),
 ]
 
