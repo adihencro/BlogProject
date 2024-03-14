@@ -45,13 +45,7 @@ class RegisterUserViewSet(viewsets.ModelViewSet):
         user = User.objects.get(username = serializer.data['username'])
         token, _ = Token.objects.get_or_create(user=user)
 
-        return Response({
-            'status': status.HTTP_201_CREATED,
-            'payload': serializer.data,
-            'token': str(token),
-            'message': 'User registered successfully'
-        })
-
+        return Response({'status': status.HTTP_201_CREATED,'payload': serializer.data, 'token': token.key,'message': 'User registered successfully'})
 
 class LoginView(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
@@ -64,5 +58,8 @@ class LoginView(ObtainAuthToken):
         
         #token, _ = self.token_model.objects.create(user=user)
         token, created = Token.objects.get_or_create(user=user)   
-        response_data = {'status': status.HTTP_201_CREATED, 'token': token.key, 'username': user.username, 'message': 'User logged successfully'}  
-        return Response(response_data)
+        return Response({'status': status.HTTP_200_OK, 'token': token.key, 'username': user.username, 'message': 'User logged successfully'})
+    
+
+
+
