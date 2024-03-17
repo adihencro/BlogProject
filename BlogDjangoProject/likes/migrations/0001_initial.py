@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name="Post",
+            name="Like",
             fields=[
                 (
                     "id",
@@ -22,9 +22,6 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
-                ("title", models.CharField(max_length=120)),
-                ("content", models.TextField()),
-                ("updated", models.DateTimeField(auto_now=True)),
                 ("timestamp", models.DateTimeField(auto_now_add=True)),
             ],
         ),

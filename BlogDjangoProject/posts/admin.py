@@ -3,7 +3,7 @@ from .models import Post
 
 
 class PostModelAdmin(admin.ModelAdmin):
-    list_display = ['id', 'title', 'content', 'updated', 'timestamp', 'creator']
+    list_display = ['id', 'title', 'content', 'updated', 'timestamp', 'creator', 'creator_id']
     list_filter = ["updated", "timestamp"]
     search_fields = ["title", "content"]
     class Meta:
