@@ -54,7 +54,6 @@ class PostViewSet(viewsets.ModelViewSet):
 
 class AdvancedPostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
-    serializer_class = AdvancedPostSerializer
     
     def get_advanced_view(self, request, pk=None):
         try:
@@ -68,8 +67,10 @@ class AdvancedPostViewSet(viewsets.ModelViewSet):
         comments_data = CommentSerializer(comments, many=True).data
         likes_data = LikeSerializer(likes, many=True).data
 
+        post_data = PostSerializer(post).data
+
         response_data = {
-            'post': self.get_serializer(post).data,
+            'post': post_data,
             'comments': comments_data,
             'likes': likes_data
         }
