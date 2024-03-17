@@ -1,5 +1,7 @@
 from .models import User
+from posts.models import Post
 from .serializers import *
+from posts.serializers import *
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -61,5 +63,22 @@ class LoginView(ObtainAuthToken):
         return Response({'status': status.HTTP_200_OK, 'token': token.key, 'username': user.username, 'message': 'User logged successfully'})
     
 
+class AdvancedUserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    
+    def get_advanced_view(self, request, pk=None):
+        try:
+            user = self.get_object()
+        except User.DoesNotExist:
+            return Response({'error': 'Post not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        posts = Post.objects.filter(creator=user)
+        post_data = PostSerializer(posts, many=True).data
+
+        response_data = {
+            'post': post_data,
+        }
+
+        return Response(response_data)
 
 

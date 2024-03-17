@@ -50,7 +50,6 @@ class PostViewSet(viewsets.ModelViewSet):
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
 
-    
 
 class AdvancedPostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
