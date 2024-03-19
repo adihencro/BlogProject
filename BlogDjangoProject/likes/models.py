@@ -9,7 +9,7 @@ class Like(models.Model):
 
 
     class Meta:
-        unique_together = (('liked_by', 'post_id'), ('liked_by', 'comment_id'))
+        unique_together = (('liked_by', 'post_id', 'comment_id'), )
 
 
 
