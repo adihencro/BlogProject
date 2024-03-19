@@ -2,6 +2,7 @@ from django.db import models
 from users.models import User
 from posts.models import Post
 from likes.models import Like
+from django.contrib.contenttypes.fields import GenericRelation
 
     
 class Comment(models.Model):

@@ -1,6 +1,7 @@
 from django.db import models
 from users.models import User
 from likes.models import Like
+from django.contrib.contenttypes.fields import GenericRelation
 
     
 class Post(models.Model):

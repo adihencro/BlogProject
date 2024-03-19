@@ -8,7 +8,7 @@ router.register(r'likes', LikeViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('likes/post/create', LikePostViewSet.as_view({'post': 'create'})),
-    path('likes/comment/create', LikeCommentViewSet.as_view({'post': 'create'}))
+    path('likes/post', LikePostViewSet.as_view({'post': 'create'})),
+    path('likes/comment', LikeCommentViewSet.as_view({'post': 'create'}))
 ]
 

@@ -60,11 +60,12 @@ class AdvancedPostViewSet(viewsets.ModelViewSet):
 
         comments = Comment.objects.filter(post=post)
         comments_data = CommentSerializer(comments, many=True).data
+
         post_data = PostSerializer(post).data
 
         response_data = {
             'post': post_data,
-            'comments': comments_data,
+            'comments': comments_data
         }
 
         return Response(response_data)

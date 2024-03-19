@@ -1,13 +1,14 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated 
-
 from posts.serializers import PostSerializer
 from comments.serializers import CommentSerializer
 from posts.models import Post
 from comments.models import Comment 
 from .models import Like
 from .serializers import *
+
+
 
 class LikeViewSet(viewsets.ModelViewSet):
     queryset = Like.objects.all()
@@ -55,6 +56,9 @@ class LikeCommentViewSet(viewsets.ModelViewSet):
             return Response({'status': status.HTTP_201_CREATED, 'payload' : serializer.data, 'comment' :  comment_data})
         
         return Response({'status': status.HTTP_200_OK, 'message': "'comment_id' is invalid"})
+
+
+
   
 
         

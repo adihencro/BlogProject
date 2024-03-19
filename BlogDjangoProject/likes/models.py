@@ -7,6 +7,9 @@ class Like(models.Model):
     post_id = models.IntegerField(default=0)
     comment_id = models.IntegerField(default=0)
 
+
     class Meta:
         unique_together = (('liked_by', 'post_id'), ('liked_by', 'comment_id'))
+
+
 
