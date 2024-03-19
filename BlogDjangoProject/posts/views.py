@@ -14,7 +14,7 @@ from comments.models import Comment
 from likes.models import Like 
 from .serializers import PostSerializer 
 from comments.serializers import CommentSerializer  
-from likes.serializers import LikeSerializer  
+from likes.serializers import *  
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -38,8 +38,6 @@ class PostViewSet(viewsets.ModelViewSet):
             return Response({'status': status.HTTP_201_CREATED, 'payload': serializer.data, 'message': 'Post created successfully', 'user': user.username })
         """
         
-    
-    @action(detail=False, methods=['get'])
     def post_by_content_or_title(self, request, str):
         queryset = self.get_queryset()
         if str:
@@ -61,17 +59,12 @@ class AdvancedPostViewSet(viewsets.ModelViewSet):
             return Response({'error': 'Post not found'}, status=status.HTTP_404_NOT_FOUND)
 
         comments = Comment.objects.filter(post=post)
-        likes = Like.objects.filter(post=post)
-
         comments_data = CommentSerializer(comments, many=True).data
-        likes_data = LikeSerializer(likes, many=True).data
-
         post_data = PostSerializer(post).data
 
         response_data = {
             'post': post_data,
             'comments': comments_data,
-            'likes': likes_data
         }
 
         return Response(response_data)

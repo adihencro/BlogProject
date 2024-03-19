@@ -11,12 +11,12 @@ router.register(r'users', UserViewSet)
 
 
 urlpatterns = [
-    path('api/', include(router.urls)),
-    path('api/users/name/<str:name>/', UserViewSet.as_view({'get': 'user_by_name'})),
-    path('api-token-auth/', views.obtain_auth_token),
-    path('api/users/register', RegisterUserViewSet.as_view({'post' : 'create'})),
-    path('api/login/', LoginView.as_view()),
-    path('api/users/get_advanced_view/<int:pk>', AdvancedUserViewSet.as_view({'get' : 'get_advanced_view'}))
+    path('', include(router.urls)),
+    path('users/name/<str:name>/', UserViewSet.as_view({'get': 'user_by_name'})),
+    path('users/api-token-auth/', views.obtain_auth_token),
+    path('users/register', RegisterUserViewSet.as_view({'post' : 'create'})),
+    path('users/login/', LoginView.as_view()),
+    path('users/get_advanced_view/<int:pk>', AdvancedUserViewSet.as_view({'get' : 'get_advanced_view'}))
     #path('api/users/login', LoginView.as_view({'post': 'get_in'}), name='login'),
 ]
 

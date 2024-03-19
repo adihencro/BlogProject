@@ -7,6 +7,8 @@ router = routers.DefaultRouter()
 router.register(r'likes', LikeViewSet)
 
 urlpatterns = [
-    path('api/', include(router.urls)),
+    path('', include(router.urls)),
+    path('likes/post/create', LikePostViewSet.as_view({'post': 'create'})),
+    path('likes/comment/create', LikeCommentViewSet.as_view({'post': 'create'}))
 ]
 
