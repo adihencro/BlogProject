@@ -11,14 +11,14 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework import status
+from likes.models import Like 
+from likes.serializers import LikePostSerializer
 
 
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-
-    #set the authentication scheme 
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticatedOrReadOnly]
 
@@ -63,20 +63,49 @@ class LoginView(ObtainAuthToken):
         return Response({'status': status.HTTP_200_OK, 'token': token.key, 'username': user.username, 'message': 'User logged successfully'})
     
 
-class AdvancedUserViewSet(viewsets.ModelViewSet):
+class MyPostsUserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     
-    def get_advanced_view(self, request, pk=None):
+    def get_my_post_view(self, request, pk=None):
         try:
             user = self.get_object()
         except User.DoesNotExist:
-            return Response({'error': 'Post not found'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
         posts = Post.objects.filter(creator=user)
+        num_of_posts = posts.count()
         post_data = PostSerializer(posts, many=True).data
 
         response_data = {
-            'post': post_data,
+            'count posts': num_of_posts,
+            'post': post_data
+        }
+
+        return Response(response_data)
+    
+
+class LikedPostsViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    
+    def get_liked_post(self, request, pk=None):
+        try:
+            user = self.get_object()
+        except User.DoesNotExist:
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        likes = Like.objects.filter(liked_by=pk)
+        num_of_likes = likes.count() 
+        likes_data = LikePostSerializer(likes, many=True).data
+        post_data = []
+
+        for post in likes_data:
+            id = post["post_id"]
+            post_data.append(PostSerializer(Post.objects.filter(id=id), many=True).data)
+
+        response_data = {
+            'count posts': num_of_likes,
+            'likes_data': likes_data,
+            'posts': post_data
         }
 
         return Response(response_data)

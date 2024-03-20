@@ -59,14 +59,18 @@ class AdvancedPostViewSet(viewsets.ModelViewSet):
             return Response({'error': 'Post not found'}, status=status.HTTP_404_NOT_FOUND)
 
         comments = Comment.objects.filter(post=post)
+        num_of_comments = comments.count()
         comments_data = CommentSerializer(comments, many=True).data
 
         likes = Like.objects.filter(post_id=pk)
+        num_of_likes = likes.count() 
         likes_data = LikePostSerializer(likes, many=True).data
 
         post_data = PostSerializer(post).data
 
         response_data = {
+            'count likes': num_of_likes,
+            'count comments': num_of_comments,
             'post': post_data,
             'comments': comments_data,
             'likes': likes_data

@@ -16,7 +16,7 @@ urlpatterns = [
     path('users/api-token-auth/', views.obtain_auth_token),
     path('users/register', RegisterUserViewSet.as_view({'post' : 'create'})),
     path('users/login/', LoginView.as_view()),
-    path('users/get_advanced_view/<int:pk>', AdvancedUserViewSet.as_view({'get' : 'get_advanced_view'}))
-    #path('api/users/login', LoginView.as_view({'post': 'get_in'}), name='login'),
+    path('users/get_all_posts/<int:pk>', MyPostsUserViewSet.as_view({'get' : 'get_my_post_view'})),
+    path('users/get_liked_post/<int:pk>', LikedPostsViewSet.as_view({'get' : 'get_liked_post'})),
 ]
 
